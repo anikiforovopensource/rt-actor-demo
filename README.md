@@ -1,4 +1,5 @@
 rt-actor-demo
-=============
+Based on Typesafe Activator template for Akka Cluster.
 
-Visual demo of how Actors work
+To launch the demo:
+sbt run
