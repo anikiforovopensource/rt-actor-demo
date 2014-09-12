@@ -46,6 +46,7 @@ object Demo {
   @volatile var clientCount = 18
   @volatile var missingHeartbeatChance = 0.25
 
+  // Display adjustments.
   object Colors {
     val Background = Color.BLACK
     val Message = new Color(0, 255, 0)
@@ -61,6 +62,14 @@ object Demo {
     val Watcher = new Color(212, 212, 212)
   }
   val LineWidthScale = 0.0015
+
+
+  //================================================================================================
+  //   Demo startup and shutdown.
+  //================================================================================================
+
+  @volatile private var demoNode: Cluster = _
+  @volatile private var sonarNodes = Seq.empty[Cluster]
 
   // Console-runnable commands.
   def initDemoNode(): Unit = {
@@ -85,13 +94,10 @@ object Demo {
     }
   }
 
-  //ConfigFactory.
-
   def stopNode(i: Int): Unit = sonarNodes.synchronized {
     sonarNodes(i + 1).system.shutdown()
   }
 
-  private var displayAdapter: ActorRef = null
   def showDisplay(): Unit = {
     if (demoNode != null) {
       val display = new SwingDisplay(displayAdapter)
@@ -102,15 +108,6 @@ object Demo {
     }
   }
 
-  //================================================================================================
-  //   Implementation
-  //================================================================================================
-
-  private val config = ConfigFactory.load()
-  private val systemName = "sonarCluster"
-
-  @volatile private var demoNode: Cluster = _
-  @volatile private var sonarNodes = Seq.empty[Cluster]
 
   def main(args: Array[String]): Unit = {
     initDemoNode()
@@ -130,14 +127,24 @@ object Demo {
   }
 
 
+  //================================================================================================
+  //   Implementation.
+  //================================================================================================
+
+  private var displayAdapter: ActorRef = null
+
+  private val config = ConfigFactory.load()
+  private val systemName = "sonarCluster"
+
+
   private def initDemoSystem(): ActorSystem = {
     val system = ActorSystem(systemName, config.getConfig("demo").withFallback(config))
 
-    val commView = system.actorOf(Props[CommView], "commView")
     val heartbeatSrc = system.actorOf(Props[HeartbeatSrc], HeartbeatSrc.ActorName)
     val alertingSys = system.actorOf(Props[AlertingSystem], AlertingSystem.ActorName)
     system.actorOf(Props(new DemoClusterListener(heartbeatSrc, alertingSys)), "demoClusterListener")
 
+    val commView = system.actorOf(Props[CommView], "commView")
     displayAdapter = system.actorOf(Props(new DisplayAdapter(commView)), "displayAdapter")
 
     system
