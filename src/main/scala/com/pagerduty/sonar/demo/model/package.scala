@@ -59,10 +59,18 @@ package model {
   case class Pos(x: Double, y: Double)
 
   case class DisplaySlot(
-    node: Int, position: Pos,
+    /** Id of the host node. */
+    node: Int,
+    /** Display position. */
+    position: Pos,
+    /** Radius of the circle representing the actor. */
     radius: Double,
+    /** Color inside the actor circle. */
     fillColor: Color,
-    borderColor: Color, heat: Double)
+    /** Color around the actor circle. */
+    borderColor: Color,
+    /** When self-messaging turns the border into heat indicator. */
+    heat: Double)
 
   case class DisplayLink(a: DisplaySlot, b: DisplaySlot, info: LinkInfo)
 }
