@@ -31,15 +31,21 @@ import akka.actor.ActorRef
 import java.awt.Color
 
 
+/**
+ * @author Aleksey Nikiforov
+ */
 package model {
 
   /**
-   * @author Aleksey Nikiforov
+   * Represents a bidirectional messaging link between two actors.
    */
   case class BidirectionalActorLink private[model] (a: ActorRef, b: ActorRef) {
     override def toString(): String = s"${a.path}<->${b.path}"
   }
 
+  /**
+   * Simplifies actor link creation.
+   */
   object ActorLink {
     def apply(a: ActorRef, b: ActorRef): BidirectionalActorLink = {
       val seq = Seq(a, b).sortBy(_.hashCode)
@@ -47,6 +53,9 @@ package model {
     }
   }
 
+  /**
+   * Allows to visualize the amount and recency of messages sent via a link.
+   */
   case class LinkInfo(heat: Double, lastUpdated: Long) {
     def update(increment: Double, now: Long): LinkInfo = {
       val secondsPassed = (now - lastUpdated)*0.001
@@ -56,8 +65,14 @@ package model {
     }
   }
 
+  /**
+   * A very simple 2-dimensional vector.
+   */
   case class Pos(x: Double, y: Double)
 
+  /**
+   * Represents an actor (or a system) in visualization context.
+   */
   case class DisplaySlot(
     /** Id of the host node. */
     node: Int,
@@ -72,10 +87,17 @@ package model {
     /** When self-messaging turns the border into heat indicator. */
     heat: Double)
 
+  /**
+   * Represents an communication link in visualization context.
+   */
   case class DisplayLink(a: DisplaySlot, b: DisplaySlot, info: LinkInfo)
 }
 
 
 package object model {
+
+  /**
+   * Just because.
+   */
   type ActorLink = BidirectionalActorLink
 }

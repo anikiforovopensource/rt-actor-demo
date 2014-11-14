@@ -46,6 +46,11 @@ object Watcher {
   case class FalseAlarm(address: Int)
 }
 
+
+/**
+ * Hash bucket manager actor will allocate one watcher per client. Watcher maintain a countdown,
+ * alerting when it reaches zero. When a watcher receives a heartbeat it will reset the countdown.
+ */
 class Watcher(val address: Int) extends CommLogger with Actor with ActorLogging {
   import Watcher._
   import context.dispatcher

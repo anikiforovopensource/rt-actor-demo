@@ -44,6 +44,9 @@ object HeartbeatWorker {
 }
 
 
+/**
+ * This actor simulates a single client emitting heartbeats.
+ */
 class HeartbeatWorker(val endpoint: ActorRef, val address: Int) extends Actor with ActorLogging {
   import HeartbeatWorker._
   import context.dispatcher

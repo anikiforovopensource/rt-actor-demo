@@ -45,6 +45,8 @@ import com.pagerduty.sonar.AlertManager.WireInAlertingSystem
 
 /**
  * @author Aleksey Nikiforov
+ *
+ * Listens to other nodes joining and wires them to simulated clients and simulated alerting system.
  */
 class DemoClusterListener(val heartbeatSrc: ActorRef, val alertingSystem: ActorRef)
   extends SonarClusterListener

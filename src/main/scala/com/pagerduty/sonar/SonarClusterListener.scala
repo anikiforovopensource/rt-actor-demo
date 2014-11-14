@@ -37,6 +37,8 @@ import akka.cluster.MemberStatus
 
 /**
  * @author Aleksey Nikiforov
+ *
+ * Contains common cluster event listener functionality.
  */
 trait SonarClusterListener extends  Actor with ActorLogging {
 

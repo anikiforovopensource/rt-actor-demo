@@ -44,7 +44,7 @@ object Demo {
   @volatile var heatDecaySpeed = 6.0 // units per second.
 
   @volatile var clientCount = 18
-  @volatile var missingHeartbeatChance = 0.25
+  @volatile var missingHeartbeatChance = 0.25 // Probability (x*100%).
 
   // Display adjustments.
   object Colors {
@@ -78,7 +78,7 @@ object Demo {
       demoNode.join(demoNode.selfAddress)
     }
     else {
-      error("Demo node is already initialized.")
+      sys.error("Demo node is already initialized.")
     }
   }
 
@@ -90,7 +90,7 @@ object Demo {
       sonarNodes.size
     }
     else {
-      error("Demo node is not initialized.")
+      sys.error("Demo node is not initialized.")
     }
   }
 
@@ -104,7 +104,7 @@ object Demo {
       display.show()
     }
     else {
-      error("Demo node is not initialized.")
+      sys.error("Demo node is not initialized.")
     }
   }
 
@@ -138,23 +138,34 @@ object Demo {
 
 
   private def initDemoSystem(): ActorSystem = {
+    // This node is used to collect visualization data and simulate external system.
     val system = ActorSystem(systemName, config.getConfig("demo").withFallback(config))
 
+    // Simulates sources of hearbeats.
     val heartbeatSrc = system.actorOf(Props[HeartbeatSrc], HeartbeatSrc.ActorName)
+    // Simulates alerting system.
     val alertingSys = system.actorOf(Props[AlertingSystem], AlertingSystem.ActorName)
+    // This actor listens to cluster events and wires nodes with simulated endpoints.
     system.actorOf(Props(new DemoClusterListener(heartbeatSrc, alertingSys)), "demoClusterListener")
 
+    // This actor collects visualization data.
     val commView = system.actorOf(Props[CommView], "commView")
+    // This actor converts current visualization state into frames.
     displayAdapter = system.actorOf(Props(new DisplayAdapter(commView)), "displayAdapter")
 
     system
   }
 
   private def initSonarSystem(): ActorSystem = {
+    // System node.
     val system = ActorSystem(systemName, config.getConfig("sonar").withFallback(config))
 
+    // Supervisor will spawn most other actors.
     val supervisor = system.actorOf(Props[Supervisor], Supervisor.ActorName)
+
+    // This actor listens to cluster events and delegates work to the supervisor.
     system.actorOf(Props(new SonarClusterManager(supervisor)), "sonarClusterManager")
+    // Alert manager.
     system.actorOf(Props(new AlertManager(supervisor)), AlertManager.ActorName)
 
     system

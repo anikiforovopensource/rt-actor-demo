@@ -59,6 +59,10 @@ object AlertManager {
 }
 
 
+/**
+ * This actor is responsible for double checking alerts and forwarding them to an external alerting
+ * system.
+ */
 class AlertManager(supervisor: ActorRef) extends CommLogger with Actor with ActorLogging {
   import AlertManager._
   import context.dispatcher

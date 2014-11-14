@@ -47,6 +47,9 @@ object CommLogger {
 }
 
 
+/**
+ * Allows to publish selected messages.
+ */
 trait CommLogger extends Actor {
   import context.dispatcher
 

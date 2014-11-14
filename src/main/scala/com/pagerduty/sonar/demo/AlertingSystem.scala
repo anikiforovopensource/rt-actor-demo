@@ -39,6 +39,9 @@ object AlertingSystem {
 }
 
 
+/**
+ * This actor subs an external alerting system. It does not do very much.
+ */
 class AlertingSystem extends CommLogger with Actor with ActorLogging {
 
   def receive = {

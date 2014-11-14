@@ -58,6 +58,10 @@ object Bucket {
 }
 
 
+/**
+ * This is a hash bucket manager actor. It is responsible for managing watcher actors and routing
+ * messages to them.
+ */
 class Bucket(val id: Int) extends CommLogger with Actor with ActorLogging {
   import Bucket._
 

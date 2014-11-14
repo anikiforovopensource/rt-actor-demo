@@ -44,6 +44,9 @@ object BucketRouter {
 }
 
 
+/**
+ * This class is responsible for routing messages to local and remote buckets.
+ */
 class BucketRouter extends CommLogger with Actor with ActorLogging {
   import BucketRouter._
 

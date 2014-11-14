@@ -36,6 +36,8 @@ import com.pagerduty.sonar.Supervisor.ReBalance
 
 /**
  * @author Aleksey Nikiforov
+ *
+ * A concrete cluster event listener for Sonar nodes.
  */
 class SonarClusterManager(val supervisor: ActorRef) extends SonarClusterListener {
 

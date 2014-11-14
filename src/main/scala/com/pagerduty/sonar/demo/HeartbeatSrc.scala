@@ -44,6 +44,9 @@ object HeartbeatSrc {
 }
 
 
+/**
+ * This actor manages heartbeat workers and proxies all the messages for them.
+ */
 class HeartbeatSrc extends CommLogger with Actor with ActorLogging {
   import HeartbeatSrc._
   import context.dispatcher

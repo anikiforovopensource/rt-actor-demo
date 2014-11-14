@@ -55,6 +55,9 @@ object DisplayAdapter {
 }
 
 
+/**
+ * Actor that transform current visualization state into a single frame.
+ */
 class DisplayAdapter(val commView: ActorRef) extends Actor with ActorLogging {
   import DisplayAdapter._
   import context.dispatcher

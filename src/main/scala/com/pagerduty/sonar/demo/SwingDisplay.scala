@@ -58,6 +58,9 @@ object SwingDisplay {
 }
 
 
+/**
+ * A hastily written mess of swing rendering code. Read it at your own risk!
+ */
 class SwingDisplay(val displayAdapter: ActorRef) {
 
   private val renderHints = new RenderingHints(

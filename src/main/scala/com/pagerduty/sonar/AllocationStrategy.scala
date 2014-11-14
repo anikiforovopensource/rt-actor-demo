@@ -33,6 +33,9 @@ import scala.util.Random
 
 /**
  * @author Aleksey Nikiforov
+ *
+ * A proper allocation strategy has not been implemented. Instead we use canned data that looks
+ * pretty when demoing.
  */
 object AllocationStrategy {
 
@@ -83,7 +86,8 @@ object AllocationStrategy {
       MigrationStrategy(unionPhase, finalPhase)
     }
     else {
-      // This is a fallback strategy for the demo. The proper allocation strategy is more involved.
+      // This is a fallback strategy for the demo.
+      // The proper allocation strategy would be more involved.
       val random = new Random
       val nodeCount = allocation.size
       val nodeList = allocation.keys.toList

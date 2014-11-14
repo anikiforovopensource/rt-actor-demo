@@ -50,6 +50,9 @@ object CommView {
 }
 
 
+/**
+ * Keeps track of active actors and their messages.
+ */
 class CommView extends Actor with ActorLogging {
   import CommView._
   import context.dispatcher

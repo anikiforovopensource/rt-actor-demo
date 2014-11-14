@@ -69,6 +69,10 @@ object Supervisor {
 }
 
 
+/**
+ * The supervisor actor manages migrations, and serves as a single point of entry into the system.
+ * It will forward most messages to BucketRouters for further routing.
+ */
 class Supervisor extends CommLogger with Actor with ActorLogging {
   import Supervisor._
   import context.dispatcher
